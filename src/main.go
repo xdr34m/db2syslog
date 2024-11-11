@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql" // MySQL Driver
-	_ "github.com/godror/godror"       // Oracle Driver
+	_ "github.com/sijms/go-ora/v2"     // go-ora Driver for Oracle
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
