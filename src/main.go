@@ -121,8 +121,8 @@ func main() {
 		}
 		log.Printf("Sent Syslog Message: %s\n", syslogMessage)
 
-		// Ensure that we are accessing the correct key "ID" (uppercase)
-		id, err := utils.ConvertToInt(logRow[idColumn]) // Use "ID" instead of "id"
+		// Ensure that we are accessing the correct key to mark as "processed"
+		id, err := utils.ConvertToInt(logRow[idColumn])
 		if err != nil {
 			log.Printf("Error: id field conversion failed: %v", err)
 			continue
