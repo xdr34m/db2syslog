@@ -1,5 +1,5 @@
 # db2syslog
-CLI that reads DB Table and forwards rows to syslog <br>
+Golang CLI that reads DB Table and forwards rows to syslog <br>
 read&write needed, so it can mark processed rows in the table
 
 # supported DBs
