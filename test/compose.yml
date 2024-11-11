@@ -1,0 +1,34 @@
+# This starts mariadb and oracledb test containers
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: logsdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  oracle-express:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle
+    environment:
+      ORACLE_PASSWORD: password
+      ORACLE_DATABASE: logsdb
+    ports:
+      - "127.0.0.1:1521:1521"
+    volumes:
+      - oracledb_data:/opt/oracle/oradata
+
+
+volumes:
+  mariadb_data:
+    driver: local
+    name: mariadb_data
+  oracledb_data:
+    driver: local
+    name: oracledb_data

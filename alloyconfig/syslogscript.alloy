@@ -1,0 +1,23 @@
+loki.source.syslog "local" {
+  listener {
+    address  = "127.0.0.1:10312"
+    labels   = { job = "local/syslog", protocol = "tcp", instance = constants.hostname}
+    //label_structured_data = true
+    //use_rfc5424_message = true
+  }
+  forward_to = [loki.relabel.syslog.receiver]
+}
+loki.relabel "syslog"{
+  forward_to = [loki.write.grafana_cloud_loki.receiver]
+  rule{
+    action="labeldrop"
+    regex="service_name"
+  }
+  /*
+rule{
+    action="replace"
+    source_labels=["job"]
+    target_label="job"
+    replacement = ""
+  }*/
+}

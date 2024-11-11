@@ -1,22 +1,19 @@
-# db2syslog
-CLI that reads DB Table and forwards rows to syslog
-# supported DBs
-mysql, oracle
+# config.yml
 
-# config
-```yaml
 # Database configuration
 database:
-  type: "mysql"  # Options: "mysql" or "oracle"
+  type: "oracle"  # Options: "mysql" or "oracle"
   host: "localhost"
-  port: 3306
-  username: "user"
+  port: 1521
+  username: "SYSTEM"
   password: "password"
   dbname: "logsdb"
   table: "logs"
+  keycolumn: "id"
   markedcolumn: "processed"
-  unmarkedvalue: "false"
-  markedvalue: "true"
+  unmarkedvalue: "0"
+  markedvalue: "1"
+
 
 # Syslog configuration
 syslog:
@@ -27,11 +24,13 @@ syslog:
   app_name: "myapp"
   proc_id: "12345"
   msg_id: "-"  # Optional, can be left as "-"
-  # Structured Data (SDATA) example is needed...
+  # Structured Data (SDATA) example
   sdata: "exampleSDID@0815 eventSource=\"Application\" eventID=\"0815\""
   dropcolumn:
     - id
     - column1
+
+
 
 # Optional logging level or other configurations
 log_level: "info"

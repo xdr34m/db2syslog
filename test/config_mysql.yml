@@ -1,10 +1,5 @@
-# db2syslog
-CLI that reads DB Table and forwards rows to syslog
-# supported DBs
-mysql, oracle
+# config.yml
 
-# config
-```yaml
 # Database configuration
 database:
   type: "mysql"  # Options: "mysql" or "oracle"
