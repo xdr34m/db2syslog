@@ -16,6 +16,7 @@ database:
   password: "password"
   dbname: "logsdb"
   table: "logs"
+  keycolumn: "id"
   markedcolumn: "processed"
   unmarkedvalue: "false"
   markedvalue: "true"
