@@ -50,6 +50,7 @@ func main() {
 			viper.GetString("database.username"),
 			viper.GetString("database.password"),
 			viper.GetString("database.dbname"),
+			viper.GetStringMapString("database.presets"),
 		)
 	default:
 		log.Fatal("Unsupported DB type in config file")

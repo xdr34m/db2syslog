@@ -16,7 +16,7 @@ type OracleDB struct {
 }
 
 // NewOracleConnection creates and returns a new OracleDB instance
-func NewOracleConnection(host string, port int, username string, password string, serviceName string) (*OracleDB, error) {
+func NewOracleConnection(host string, port int, username string, password string, serviceName string, presets map[string]string) (*OracleDB, error) {
 	// Construct the DSN (Data Source Name) for go-ora
 	dsn := fmt.Sprintf("oracle://%s:%s@%s:%d/%s", username, password, host, port, serviceName)
 	db, err := sql.Open("oracle", dsn)
@@ -29,30 +29,53 @@ func NewOracleConnection(host string, port int, username string, password string
 		return nil, fmt.Errorf("error pinging database: %w", err)
 	}
 
-	// Set the session's time zone to 'Europe/Berlin' (German time zone)
-	_, err = db.Exec("ALTER SESSION SET TIME_ZONE = 'Europe/Berlin'")
-	if err != nil {
-		return nil, fmt.Errorf("error setting session time zone: %w", err)
-	}
+	/*
+		// Set the session's time zone to 'Europe/Berlin' (German time zone)
+		_, err = db.Exec("ALTER SESSION SET TIME_ZONE = 'Europe/Berlin'")
+		if err != nil {
+			return nil, fmt.Errorf("error setting session time zone: %w", err)
+		}
 
-	// Set NLS parameters to match German conventions for date/time formats
-	_, err = db.Exec("ALTER SESSION SET NLS_DATE_FORMAT = 'DD.MM.YYYY HH24:MI:SS'")
-	if err != nil {
-		return nil, fmt.Errorf("error setting NLS_DATE_FORMAT: %w", err)
-	}
-	_, err = db.Exec("ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'DD.MM.YYYY HH24:MI:SS.FF'")
-	if err != nil {
-		return nil, fmt.Errorf("error setting NLS_TIMESTAMP_FORMAT: %w", err)
-	}
+		// Set NLS parameters to match German conventions for date/time formats
+		_, err = db.Exec("ALTER SESSION SET NLS_DATE_FORMAT = 'DD.MM.YYYY HH24:MI:SS'")
+		if err != nil {
+			return nil, fmt.Errorf("error setting NLS_DATE_FORMAT: %w", err)
+		}
+		_, err = db.Exec("ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'DD.MM.YYYY HH24:MI:SS.FF'")
+		if err != nil {
+			return nil, fmt.Errorf("error setting NLS_TIMESTAMP_FORMAT: %w", err)
+		}
 
-	// Set the NLS language and territory to German
-	_, err = db.Exec("ALTER SESSION SET NLS_LANGUAGE = 'GERMAN'")
-	if err != nil {
-		return nil, fmt.Errorf("error setting NLS_LANGUAGE: %w", err)
-	}
-	_, err = db.Exec("ALTER SESSION SET NLS_TERRITORY = 'GERMANY'")
-	if err != nil {
-		return nil, fmt.Errorf("error setting NLS_TERRITORY: %w", err)
+		// Set the NLS language and territory to German
+		_, err = db.Exec("ALTER SESSION SET NLS_LANGUAGE = 'GERMAN'")
+		if err != nil {
+			return nil, fmt.Errorf("error setting NLS_LANGUAGE: %w", err)
+		}
+		_, err = db.Exec("ALTER SESSION SET NLS_TERRITORY = 'GERMANY'")
+		if err != nil {
+			return nil, fmt.Errorf("error setting NLS_TERRITORY: %w", err)
+		}*/
+
+	// Check if presets exist in the config
+	if presets != nil {
+		// Loop through each key in the presets section
+		//presets := viper.GetStringMap("database.presets") // Get the whole map of presets
+		for key, value := range presets {
+			// Convert the key to uppercase
+			upperKey := strings.ToUpper(key)
+
+			// Generate the SQL command
+			sqlCommand := fmt.Sprintf("ALTER SESSION SET %s = '%v'", upperKey, value)
+
+			// Execute the SQL command
+			_, err := db.Exec(sqlCommand)
+			if err != nil {
+				return nil, fmt.Errorf("error setting %s: %w", upperKey, err)
+			}
+			log.Printf("[DEBUG] Successfully set %s = %v", upperKey, value)
+		}
+	} else {
+		log.Print("No presents found in config, no ALTER SESSION is done")
 	}
 
 	// Return a new OracleDB instance
