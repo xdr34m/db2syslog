@@ -1,9 +1,11 @@
 # db2syslog
-CLI that reads DB Table and forwards rows to syslog
+CLI that reads DB Table and forwards rows to syslog <br>
+read&write needed, so it can mark processed rows in the table
+
 # supported DBs
 mysql, oracle
 
-# config
+# config example
 ```yaml
 # Database configuration
 database:
