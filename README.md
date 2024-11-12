@@ -23,8 +23,8 @@ database:
   presets: # only for oracle - this translates to ALTER SESSION SET <yamlkey> = '<yamlvalue>'
     #time_zone: "Europe/Berlin"
     nls_date_format: "DD.MM.RR HH24:MI:SS"
-    nls_timestamp_format: "DD.MM.YYYY HH24:MI:SS.FF"
-    nls_timestamp_tz_format: "DD.MM.RR HH24:MI:SSXFF"
+    nls_timestamp_format: "DD.MM.RR HH24:MI:SSXFF"
+    nls_timestamp_tz_format: "DD.MM.RR HH24:MI:SSXFF TZR"
     #nls_language: "GERMAN"
     #nls_territory: "GERMANY"
 
